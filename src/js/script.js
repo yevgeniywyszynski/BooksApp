@@ -1,9 +1,10 @@
 const select = {
-  templateOf:{
+
+  templateOf: {
     booksTemplate: '#template-book',
   },
 
-  containerOf:{
+  containerOf: {
     booksList: '.books-list',
     imagesList: '.books-list .book__image',
   },
@@ -41,10 +42,9 @@ class BookList{
         ratingWidth: ratingWidth
       };
       const generatedHTML = templates.booksTemplate(bookPlus);
-      console.log(book);
-      //console.log(generatedHTML);
+      
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      //console.log(generatedDOM);
+      
       const booksContainer = document.querySelector(select.containerOf.booksList);
       booksContainer.appendChild(generatedDOM);
     }
@@ -55,7 +55,7 @@ class BookList{
       background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
     } else if(rating > 6 && rating <= 8){
       background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
-    } else if(rating > 8 && rating <=9){
+    } else if(rating > 8 && rating <= 9){
       background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
     } else if(rating > 9){
       background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
@@ -67,50 +67,49 @@ class BookList{
     const thisBookList = this;
     const booksList = document.querySelector(select.containerOf.booksList);
     const imagesList = booksList.querySelectorAll(select.containerOf.imagesList);
-    //console.log(imagesList);
+    
     const filter = document.querySelector(select.formsOf.filters);
   
-    for(let OneImg of imagesList){
-      OneImg.addEventListener('dblclick', function(event){
+    for(let img of imagesList){
+      img.addEventListener('dblclick', function(event){
         event.preventDefault();
-        let id = OneImg.getAttribute('data-id');
+        let id = img.getAttribute('data-id');
         if(thisBookList.favoriteList.includes(id)){
           thisBookList.favoriteList.splice(thisBookList.favoriteList.indexOf(id), 1);
-          OneImg.classList.remove('favorite');
+          img.classList.remove('favorite');
         } else {
-          thisBookList.favoriteList.push(OneImg.getAttribute('data-id'));
-          OneImg.classList.add('favorite');
+          thisBookList.favoriteList.push(img.getAttribute('data-id'));
+          img.classList.add('favorite');
         }
-        console.log(thisBookList.favoriteList);
       });
     }
     filter.addEventListener('change', function(event){
-      if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter')
-        console.log(event.target.value);
-      if(event.target.checked) {
-        thisBookList.filters.push(event.target.value);
-      } else {
-        thisBookList.filters.splice(thisBookList.filters.indexOf(event.target.value));
+      if(event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter') {
+        if(event.target.checked) {
+          thisBookList.filters.push(event.target.value);
+        } else {
+          thisBookList.filters.splice(thisBookList.filters.indexOf(event.target.value), 1);
+        }
+        // literowka w nazwie filterBooks
+        thisBookList.filterBooks();
       }
-      console.log(thisBookList.filters);
-      thisBookList.filtBooks();
     });
   } 
 
-  filtBooks() {
+  filterBooks() {
     const thisBookList = this;
-    for (let OneBook of dataSource.books){
+    for (let book of dataSource.books){
       let toHide = false;
       for(let filt of thisBookList.filters){
-        if(!OneBook.details[filt]){
+        if(!book.details[filt]){
           toHide = true;
         }
       }
       if(toHide == true){
-        const bookCover = document.querySelector('.book__image[data-id="' + OneBook.id + '"]');
+        const bookCover = document.querySelector('.book__image[data-id="' + book.id + '"]');
         bookCover.classList.add('hidden');
       } else {
-        const bookCover = document.querySelector('.book__image[data-id="' + OneBook.id + '"]');
+        const bookCover = document.querySelector('.book__image[data-id="' + book.id + '"]');
         bookCover.classList.remove('hidden');
       }
     }
