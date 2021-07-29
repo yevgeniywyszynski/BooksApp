@@ -90,7 +90,6 @@ class BookList{
         } else {
           thisBookList.filters.splice(thisBookList.filters.indexOf(event.target.value), 1);
         }
-        // literowka w nazwie filterBooks
         thisBookList.filterBooks();
       }
     });
